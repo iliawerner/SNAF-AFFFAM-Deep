@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистически-обоснованный калькулятор виральности</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            max-width: 680px; 
+            margin: 40px auto; 
+            padding: 40px; 
+            background-color: #f8f9fa;
+            color: #1d1d1f;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+        h2 { 
+            text-align: center; 
+            color: #111; 
+            margin-bottom: 5px; 
+            font-weight: 800;
+            font-size: 28px;
+            letter-spacing: -0.02em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #86868b;
+            font-size: 15px;
+            margin-bottom: 40px;
+        }
+        .section-header { 
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-top: 40px; 
+            margin-bottom: 20px; 
+            border: 1px solid #e5e5e5;
+            font-weight: 700;
+            color: #1d1d1f;
+        }
+        .subsection-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #86868b;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 10px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        .form-group { 
+            display: flex; 
+            flex-direction: column;
+        }
+        label { 
+            font-size: 14px; 
+            color: #1d1d1f; 
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .desc {
+            font-size: 12px;
+            color: #86868b;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        input[type="number"] { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #d2d2d7; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            box-sizing: border-box;
+            transition: all 0.2s;
+            background: #fff;
+            font-weight: 500;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 4px rgba(0,113,227,0.1);
+        }
+        .positive-impact input { border-left: 3px solid #28a745; }
+        .negative-impact input { border-left: 3px solid #dc3545; }
+        
+        button { 
+            width: 100%; 
+            padding: 18px; 
+            margin-top: 40px; 
+            background-color: #0071e3; 
+            color: white; 
+            border: none; 
+            border-radius: 14px; 
+            font-size: 17px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: transform 0.1s, background-color 0.2s;
+        }
+        button:hover { background-color: #0077ed; }
+        button:active { transform: scale(0.98); }
+        
+        .result-container {
+            margin-top: 40px;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 30px;
+        }
+        .result-box { 
+            background-color: #fff; 
+            border: 1px solid #e5e5e5;
+            border-radius: 18px; 
+            text-align: center; 
+            padding: 30px 20px;
+        }
+        .score-val { font-size: 44px; font-weight: 700; line-height: 1.1; margin: 10px 0; color: #1d1d1f; }
+        .score-sub { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #86868b; font-weight: 600; }
+        .score-note { font-size: 13px; color: #86868b; margin-top: 15px; }
+
+        .recommendation-box {
+            margin-top: 25px;
+            background-color: #f0f7ff;
+            border: 1px solid #cce4ff;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .rec-title { color: #0071e3; font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+        .rec-text { color: #1d1d1f; font-size: 14px; line-height: 1.5; }
+        .rec-text b { color: #0056b3; }
+
+        .disclaimer-box {
+            margin-top: 25px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Предиктивный калькулятор v2.0</h2>
+    <div class="subtitle">На основе статистического анализа данных (n=33)</div>
+
+    <div class="section-header">Ключевые факторы</div>
+
+    <div class="subsection-title">Положительное влияние (чем больше, тем лучше)</div>
+    <div class="form-grid">
+        <div class="form-group positive-impact">
+            <label for="famRec">Узнаваемость (Fam_Rec)</label>
+            <div class="desc">Насколько хорошо аудитория знает объект/тему? (Apple, Windows, Google)</div>
+            <input type="number" id="famRec" min="0" max="10" value="5">
+        </div>
+        <div class="form-group positive-impact">
+            <label for="affNow">Актуальность (Affect_Now)</label>
+            <div class="desc">Насколько тема важна для жизни людей прямо сейчас?</div>
+            <input type="number" id="affNow" min="0" max="10" value="5">
+        </div>
+    </div>
+
+    <div class="subsection-title">Отрицательное влияние (чем меньше, тем лучше)</div>
+    <div class="form-grid">
+        <div class="form-group negative-impact">
+            <label for="affPsych">Психологическое давление (Affect_Psych)</label>
+            <div class="desc">Манипуляции, социальное давление, культурные войны, стресс.</div>
+            <input type="number" id="affPsych" min="0" max="10" value="3">
+        </div>
+        <div class="form-group negative-impact">
+            <label for="famNeg">Токсичность (Fam_Neg)</label>
+            <div class="desc">Насколько тема связана с ненавистью, спорами, скандалами?</div>
+            <input type="number" id="famNeg" min="0" max="10" value="2">
+        </div>
+    </div>
+
+    <div class="subsection-title">Нейтральные / Незначимые факторы (не используются в формуле)</div>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Ностальгия (Fam_Nost)</label>
+            <div class="desc">Стат. анализ показал незначимость этого фактора на текущих данных.</div>
+            <input type="number" id="famNost" min="0" max="10" value="0" disabled>
+        </div>
+        <div class="form-group">
+            <label>Практическая польза (Affect_Prac)</label>
+            <div class="desc">Влияние этого фактора оказалось сложным (нелинейным) и было исключено для упрощения.</div>
+            <input type="number" id="affPrac" min="0" max="10" value="0" disabled>
+        </div>
+    </div>
+
+    <button onclick="calculateViews()">Рассчитать потенциал просмотров</button>
+
+    <div class="result-container" id="resultOutput" style="display:none;">
+        <div class="result-box">
+            <div class="score-sub">Прогноз просмотров</div>
+            <div class="score-val" id="viewPrediction">0 - 0</div>
+            <div class="score-note">Это 95% предиктивный интервал, а не точный прогноз</div>
+        </div>
+
+        <div class="recommendation-box" id="recBox">
+            <div class="rec-title">Ключевые точки роста</div>
+            <div class="rec-text" id="recText">Здесь появятся рекомендации по улучшению концепции.</div>
+        </div>
+
+        <div class="disclaimer-box">
+            <strong>Важное ограничение:</strong> Модель объясняет около 36% вариативности просмотров. Остальные 64% зависят от качества заголовка, обложки, монтажа и алгоритмов YouTube. Используйте этот инструмент для оценки **относительного потенциала** идей, а не для получения точного прогноза.
+        </div>
+    </div>
+
+    <script>
+        // Параметры из регрессионной Модели B
+        const model = {
+            intercept: 8.81236,
+            coefficients: {
+                famRec: 0.1977,
+                affNow: 0.1373,
+                affPsych: -0.1430,
+                famNeg: -0.0709
+            },
+            rmse: 1.133 // LOO CV RMSE в log-пространстве
+        };
+
+        function formatViews(num) {
+            if (num < 1000) return num.toFixed(0);
+            if (num < 1000000) return (num / 1000).toFixed(0) + 'k';
+            return (num / 1000000).toFixed(1) + 'M';
+        }
+
+        function calculateViews() {
+            const famRec = parseFloat(document.getElementById('famRec').value) || 0;
+            const affNow = parseFloat(document.getElementById('affNow').value) || 0;
+            const affPsych = parseFloat(document.getElementById('affPsych').value) || 0;
+            const famNeg = parseFloat(document.getElementById('famNeg').value) || 0;
+
+            // Рассчитываем ln(Views) по формуле
+            const lnViews = model.intercept + 
+                          (model.coefficients.famRec * famRec) + 
+                          (model.coefficients.affNow * affNow) + 
+                          (model.coefficients.affPsych * affPsych) + 
+                          (model.coefficients.famNeg * famNeg);
+
+            // Конвертируем в просмотры
+            const predictedViews = Math.exp(lnViews);
+
+            // Рассчитываем 95% предиктивный интервал
+            // exp(ln(V) ± 1.96 * RMSE)
+            const lowerBound = Math.exp(lnViews - 1.96 * model.rmse);
+            const upperBound = Math.exp(lnViews + 1.96 * model.rmse);
+
+            // Отображаем результат
+            const resultDiv = document.getElementById('resultOutput');
+            resultDiv.style.display = 'block';
+            document.getElementById('viewPrediction').innerText = `${formatViews(lowerBound)} - ${formatViews(upperBound)}`;
+
+            // Генерируем рекомендации
+            let recText = "";
+            if (famRec < 7) {
+                recText += "<p><b>Увеличить Узнаваемость (Fam_Rec):</b> Это самый сильный положительный фактор. Убедитесь, что тема и объект в центре видео мгновенно узнаваемы для широкой аудитории. Используйте иконические образы.</p>";
+            }
+            if (affNow < 7) {
+                recText += "<p><b>Повысить Актуальность (Affect_Now):</b> Почему эта тема важна именно сейчас? Свяжите её с текущими событиями, трендами или проблемами, чтобы создать ощущение срочности.</p>";
+            }
+            if (affPsych > 4) {
+                recText += "<p><b>Снизить Психологическое Давление (Affect_Psych):</b> Это сильный негативный фактор. Темы, вызывающие стресс, тревогу или ощущение манипуляции, отталкивают аудиторию. Попробуйте найти более нейтральный или позитивный угол подачи.</p>";
+            }
+            if (famNeg > 4) {
+                recText += "<p><b>Уменьшить Токсичность (Fam_Neg):</b> Избегайте излишней скандальности и спорности. Хотя небольшой конфликт может привлечь внимание, высокий уровень негатива вредит просмотрам.</p>";
+            }
+            if (!recText) {
+                recText = "<p><b>Хороший баланс факторов!</b> Ваша концепция выглядит сбалансированной. Теперь главный фокус — на качестве исполнения: заголовок, обложка и удержание аудитории.</p>";
+            }
+
+            document.getElementById('recText').innerHTML = recText;
+            resultDiv.scrollIntoView({behavior: "smooth"});
+        }
+
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') calculateViews();
+        });
+    </script>
+</body>
+</html>

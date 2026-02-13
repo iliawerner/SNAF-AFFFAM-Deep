@@ -1,0 +1,65 @@
+{
+  "model_a": {
+    "intercept": 8.775662997693532,
+    "coefficients": {
+      "Fam_Rec": 0.189356711725905,
+      "Affect_Now": 0.12186745611867734,
+      "Fam_Neg": -0.16113221951142992
+    },
+    "p_values": {
+      "Fam_Rec": 0.00541362610748158,
+      "Affect_Now": 0.05075587269234026,
+      "Fam_Neg": 0.021057472638069497
+    },
+    "r_squared": 0.3348712734338518,
+    "adj_r_squared": 0.26606485344425024,
+    "variables": [
+      "Fam_Rec",
+      "Affect_Now",
+      "Fam_Neg"
+    ]
+  },
+  "model_b": {
+    "intercept": 8.812360341398223,
+    "coefficients": {
+      "Fam_Rec": 0.19771866770608335,
+      "Affect_Now": 0.1372805849486417,
+      "Affect_Psych": -0.1429768789007489,
+      "Fam_Neg": -0.07085596576795614
+    },
+    "p_values": {
+      "Fam_Rec": 0.0022460136555835894,
+      "Affect_Now": 0.02093496397156039,
+      "Affect_Psych": 0.02744759419843636,
+      "Fam_Neg": 0.33839400321344515
+    },
+    "r_squared": 0.44262331150856693,
+    "adj_r_squared": 0.3629980702955051,
+    "variables": [
+      "Fam_Rec",
+      "Affect_Now",
+      "Affect_Psych",
+      "Fam_Neg"
+    ]
+  },
+  "model_c": {
+    "intercept": 9.69063244148753,
+    "coefficients": {
+      "CRI": 0.021499190500293888,
+      "Affect_Psych": -0.11208814894786243,
+      "Fam_Neg": -0.05204208401702747
+    },
+    "p_values": {
+      "CRI": 0.0057183073011344825,
+      "Affect_Psych": 0.09656591790140932,
+      "Fam_Neg": 0.4990595581903606
+    },
+    "r_squared": 0.3385721539613241,
+    "adj_r_squared": 0.2701485836814611,
+    "variables": [
+      "CRI",
+      "Affect_Psych",
+      "Fam_Neg"
+    ]
+  }
+}
